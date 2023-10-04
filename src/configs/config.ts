@@ -8,6 +8,9 @@ export interface Iconfig {
   server: {
     port: string | number;
   };
+  jwt: {
+    key: string;
+  };
 }
 
 export const configs: Iconfig = {
@@ -19,5 +22,8 @@ export const configs: Iconfig = {
     userName: process.env.DB_USER || "",
     password: process.env.DB_PASSWORD || "",
     uri: process.env.DB_URI || "mongodb://127.0.0.1:27017/myapp",
+  },
+  jwt: {
+    key: process.env.JWT_KEY || "112",
   },
 };
