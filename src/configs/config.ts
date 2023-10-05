@@ -11,6 +11,11 @@ export interface Iconfig {
   jwt: {
     key: string;
   };
+  cloudinary: {
+    apiKey: string;
+    apiSecret: string;
+    cloudName: string;
+  };
 }
 
 export const configs: Iconfig = {
@@ -25,5 +30,10 @@ export const configs: Iconfig = {
   },
   jwt: {
     key: process.env.JWT_KEY || "112",
+  },
+  cloudinary: {
+    apiKey: process.env.API_KEY_CLOUDINARY || "",
+    apiSecret: process.env.API_SECRET_CLOUDINARY || "",
+    cloudName: process.env.CLOUD_NAME_CLOUDINARY || "",
   },
 };

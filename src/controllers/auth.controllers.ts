@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import createToken from "../functions/createToken";
+import uploadImage from '../functions/uploadImage';
 import userModel, { IUserModel } from "../models/user.model";
 
 export const login = async (
@@ -36,9 +37,8 @@ export const register = async (
   req: Request,
   resp: Response
 ): Promise<Response | any> => {
-  const { password, userName, email, image } = req.body;
-
-  //TODO: hacer vertificacion
+  const { password, userName, email } = req.body;
+  const img = req.file;
 
   try {
     const matchUser: IUserModel | null = await userModel.findOne({ email });
@@ -52,7 +52,13 @@ export const register = async (
       userName,
     });
 
-    //TODO:hacer subida de imagenes
+    if (img) {
+      const imgUrl = await uploadImage(img);
+      if (typeof imgUrl != "string") {
+        return resp.status(406).json({ message: "error to upload image" });
+      }
+      newUser.image = imgUrl;
+    }
 
     const token = await createToken({
       userName: newUser.userName,
