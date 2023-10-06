@@ -27,6 +27,7 @@ export const login = async (
     const token = await createToken({
       userName: matchUser.userName,
       email: matchUser.email,
+      id: matchUser._id,
     });
 
     if (type == "web") {
@@ -59,9 +60,11 @@ export const register = async (
       return resp.status(409).json({ message: "this user is already created" });
     }
 
+    const passwordHash = await bcrypt.hash(password, 10);
+
     const newUser: IUserModel = new userModel({
       email,
-      password,
+      password: passwordHash,
       userName,
     });
 
@@ -76,6 +79,7 @@ export const register = async (
     const token = await createToken({
       userName: newUser.userName,
       email: newUser.email,
+      id: newUser._id,
     });
 
     resp.cookie("token", token);
@@ -95,7 +99,7 @@ export const register = async (
     return resp.send({
       userName: userSaved.userName,
       email: userSaved.email,
-      image:userSaved.image
+      image: userSaved.image,
     });
   } catch (err) {
     console.log(err);
