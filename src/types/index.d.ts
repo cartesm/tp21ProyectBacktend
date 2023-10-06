@@ -3,7 +3,7 @@ declare namespace Express {
     user: {
       id: string;
       userName: string;
-    };
-    counter: number;
+    } | null;
+    counter: number | null;
   }
 }
