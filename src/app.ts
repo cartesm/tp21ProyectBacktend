@@ -7,6 +7,7 @@ import path from "path";
 
 import authRoutes from "./routes/auth.routes";
 
+import locationsRoutes from "./routes/locations.routes";
 // inicializaciones
 
 const server: Express = express();
@@ -30,10 +31,7 @@ const storage = multer.diskStorage({
 // niddlewares
 
 server.use(
-  cors({
-    credentials: false,
-    origin: "",
-  })
+  cors()
 );
 server.use(express.json());
 server.use(morgan("dev"));
@@ -47,5 +45,6 @@ server.use(
 // routes
 
 server.use(authRoutes);
+server.use(locationsRoutes);
 
 export default server;

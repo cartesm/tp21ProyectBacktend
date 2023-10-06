@@ -7,16 +7,22 @@ const auth = async (
   resp: Response,
   next: NextFunction
 ): Promise<NextFunction | Response | any> => {
+  console.log("middleware auth");
+
   const { token } = req.cookies;
+  console.log(req.cookies)
   if (!token) {
+    console.log("no token¿")
     return resp.status(401).json({ message: "not token created" });
   }
 
-  jwt.verify(token, configs.jwt.key, (err: any, decoded: any) => {
+  await jwt.verify(token, configs.jwt.key, (err: any, decoded: any) => {
     if (err) {
+      console.log("err");
       return resp.status(401).json({ message: "token not valid" });
     }
     req.user = decoded;
+    console.log("decodeded");
   });
 
   next();
