@@ -30,17 +30,21 @@ const storage = multer.diskStorage({
 
 // niddlewares
 
-server.use(
-  cors()
-);
-server.use(express.json());
-server.use(morgan("dev"));
 server.use(cookies());
+server.use(
+  cors({
+    credentials: true,
+    origin:true,
+  })
+);
 server.use(
   multer({
     storage,
   }).single("img")
 );
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
+server.use(morgan("dev"));
 
 // routes
 

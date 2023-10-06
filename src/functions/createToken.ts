@@ -12,7 +12,6 @@ export default async (data: Idata) => {
   try {
     const token = await jwt.sign(data, configs.jwt.key);
 
-    console.log(token)
     return token;
   } catch (err) {
     console.log(err);

@@ -9,10 +9,9 @@ const auth = async (
 ): Promise<NextFunction | Response | any> => {
   console.log("middleware auth");
 
-  const { token } = req.cookies;
+  const  token  = req.cookies.token;
   console.log(req.cookies)
   if (!token) {
-    console.log("no token¿")
     return resp.status(401).json({ message: "not token created" });
   }
 

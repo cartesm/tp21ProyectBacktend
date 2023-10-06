@@ -30,12 +30,12 @@ export const login = async (
       id: matchUser._id,
     });
 
-    if (type == "web") {
+    if (type == "mob") {
+      resp.cookie("token", token);
+    } else {
       resp.cookie("token", token, {
         maxAge: 604800000,
       });
-    } else {
-      resp.cookie("token", token);
     }
 
     return resp.json({

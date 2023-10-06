@@ -22,7 +22,7 @@ const uploadImg = async (file: Express.Multer.File) /* : Promise<string> */ => {
       if (err) {
         console.log(err);
       } else {
-        console.log("img deleted");
+        console.log("img deleted: ",file.filename);
       }
     });
 
