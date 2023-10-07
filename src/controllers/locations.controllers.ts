@@ -7,15 +7,17 @@ export const addLocation = async (
   resp: Response
 ): Promise<Response | any> => {
   const { coordinates, name, description, types, country } = req.body;
+
   const img = req.file;
-  const id = req.user?.id;
+
+  const userId = req.user?.id;
   const userName = req.user?.userName;
 
   try {
     const newLocation: Ilocations = new locationsModel({
       author: {
-        id,
-        userName,
+        id: userId,
+        userName: userName,
       },
       coordinates,
       name,
@@ -23,12 +25,7 @@ export const addLocation = async (
       types,
       country,
     });
-    // TODO: error de tipo de imagen
-    if (typeof img == "string") {
-      return resp
-        .status(406)
-        .json({ message: "the type of the image is not acceptable" });
-    }
+
     if (img) {
       const imgUrl = await uploadImage(img);
       if (typeof imgUrl != "string") {
@@ -38,8 +35,6 @@ export const addLocation = async (
     }
 
     await newLocation.save();
-
-    newLocation.author.id = "";
 
     return resp.json(newLocation);
   } catch (err) {
@@ -72,9 +67,10 @@ export const getGlobalLocations = async (
 ): Promise<Response | any> => {
   const matches: Array<Ilocations> = await locationsModel.find();
 
-  if (matches.length >= 0) {
+  if (matches.length == 0) {
     return resp.status(204).json({ message: "no location in this planet" });
   }
+  console.log(matches);
 
   return resp.json(matches);
 };

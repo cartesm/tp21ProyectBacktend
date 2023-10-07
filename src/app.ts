@@ -5,6 +5,7 @@ import morgan from "morgan";
 import multer from "multer";
 import path from "path";
 
+import colors from "colors";
 import authRoutes from "./routes/auth.routes";
 
 import locationsRoutes from "./routes/locations.routes";
@@ -30,11 +31,12 @@ const storage = multer.diskStorage({
 
 // niddlewares
 
+colors.enable();
 server.use(cookies());
 server.use(
   cors({
     credentials: true,
-    origin:true,
+    origin: "http://localhost:5173",
   })
 );
 server.use(

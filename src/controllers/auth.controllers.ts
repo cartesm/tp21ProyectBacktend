@@ -9,7 +9,7 @@ export const login = async (
   resp: Response
 ): Promise<Response | any> => {
   const { password, email, type } = req.body;
-
+console.log(req.body)
   try {
     const matchUser: IUserModel | null = await userModel.findOne({ email });
     if (!matchUser) {

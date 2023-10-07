@@ -11,7 +11,9 @@ const auth = async (
 
   const  token  = req.cookies.token;
   console.log(req.cookies)
+  
   if (!token) {
+    console.log("no token ")
     return resp.status(401).json({ message: "not token created" });
   }
 
@@ -24,7 +26,7 @@ const auth = async (
     console.log("decodeded");
   });
 
-  next();
+ return next();
 };
 
 export default auth;
