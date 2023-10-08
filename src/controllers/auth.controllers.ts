@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import createToken from "../functions/createToken";
 import uploadImage from "../functions/uploadImage";
@@ -9,7 +9,7 @@ export const login = async (
   resp: Response
 ): Promise<Response | any> => {
   const { password, email, type } = req.body;
-console.log(req.body)
+  console.log(req.body);
   try {
     const matchUser: IUserModel | null = await userModel.findOne({ email });
     if (!matchUser) {
@@ -51,7 +51,7 @@ export const register = async (
   req: Request,
   resp: Response
 ): Promise<Response | any> => {
-  const { password, userName, email, type } = req.body;
+  const { password, userName, email } = req.body;
   const img = req.file;
 
   try {
@@ -59,8 +59,8 @@ export const register = async (
     if (matchUser) {
       return resp.status(409).json({ message: "this user is already created" });
     }
-
-    const passwordHash = await bcrypt.hash(password, 10);
+    console.log(`${(req.body.userName, req.body.email)}`.bgGreen);
+    const passwordHash: string = await bcrypt.hash(password, 10);
 
     const newUser: IUserModel = new userModel({
       email,
@@ -69,7 +69,7 @@ export const register = async (
     });
 
     if (img) {
-      const imgUrl = await uploadImage(img);
+      const imgUrl: string | Error = await uploadImage(img);
       if (typeof imgUrl != "string") {
         return resp.status(406).json({ message: "error to upload image" });
       }
@@ -83,15 +83,6 @@ export const register = async (
     });
 
     resp.cookie("token", token);
-
-    if (type == "web") {
-      resp.cookie("token", token, {
-        maxAge: 604800000,
-      });
-      console.log("web");
-    } else {
-      resp.cookie("token", token);
-    }
 
     const userSaved: IUserModel = await newUser.save();
     console.log(userSaved);
