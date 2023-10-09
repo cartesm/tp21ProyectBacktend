@@ -11,7 +11,9 @@ export const addLocation = async (
   const img = req.file;
   const userId = req.user?.id;
   const userName = req.user?.userName;
-  console.log(coordinates);
+
+  const coords: Array<string> = coordinates.split(",");
+  const typs: Array<string> = types.split(",");
 
   try {
     const newLocation: Ilocations = new locationsModel({
@@ -19,10 +21,10 @@ export const addLocation = async (
         id: userId,
         userName: userName,
       },
-      coordinates,
+      coordinates: [coords[0], coords[1]],
       name,
       description,
-      types,
+      types: typs,
       country,
     });
 
@@ -73,6 +75,23 @@ export const getGlobalLocations = async (
   console.log(matches);
 
   return resp.json(matches);
+};
+
+export const getOneLocation = async (
+  req: Request,
+  resp: Response
+): Promise<Response | any> => {
+  const { id } = req.params;
+
+  const match: Ilocations | null = await locationsModel.findOne({ _id: id });
+
+  if (!match) {
+    return resp.status(204).json({ message: "this id not exist" });
+  }
+
+  console.log(match);
+
+  return resp.json(match);
 };
 
 // TODO: test this
