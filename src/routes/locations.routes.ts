@@ -10,14 +10,6 @@ const router: Router = Router();
 
 router.post("/add-location", Auth, addLocation);
 
-router.post("/try",Auth,(req,resp)=>{
-
-    console.log(req.cookies.token)
-
-    resp.send("hola")
-
-})
-
 router.get("/get-by-country", getAllLocationsByCountry);
 router.get("/get-all-locations", getGlobalLocations);
 

@@ -20,6 +20,7 @@ export const login = async (
       password,
       matchUser.password
     );
+
     if (matchHash) {
       return resp.status(401).json({ message: "password is incorrect" });
     }
@@ -30,17 +31,13 @@ export const login = async (
       id: matchUser._id,
     });
 
-    if (type == "mob") {
-      resp.cookie("token", token);
-    } else {
-      resp.cookie("token", token, {
-        maxAge: 604800000,
-      });
-    }
+    resp.cookie("token", token);
 
     return resp.json({
       userName: matchUser.userName,
       email: matchUser.email,
+      id: matchUser._id,
+      img: matchUser.image,
     });
   } catch (err) {
     console.log(err);
@@ -85,12 +82,12 @@ export const register = async (
     resp.cookie("token", token);
 
     const userSaved: IUserModel = await newUser.save();
-    console.log(userSaved);
 
     return resp.send({
-      userName: userSaved.userName,
-      email: userSaved.email,
-      image: userSaved.image,
+      userName: newUser.userName,
+      email: newUser.email,
+      id: newUser._id,
+      img: newUser.image,
     });
   } catch (err) {
     console.log(err);

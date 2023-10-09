@@ -10,7 +10,6 @@ const auth = async (
   console.log("middleware auth");
 
   const  token  = req.cookies.token;
-  console.log(req.cookies)
   
   if (!token) {
     console.log("no token ")
@@ -23,7 +22,6 @@ const auth = async (
       return resp.status(401).json({ message: "token not valid" });
     }
     req.user = decoded;
-    console.log("decodeded");
   });
 
  return next();

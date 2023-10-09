@@ -9,9 +9,9 @@ export const addLocation = async (
   const { coordinates, name, description, types, country } = req.body;
 
   const img = req.file;
-
   const userId = req.user?.id;
   const userName = req.user?.userName;
+  console.log(coordinates);
 
   try {
     const newLocation: Ilocations = new locationsModel({
