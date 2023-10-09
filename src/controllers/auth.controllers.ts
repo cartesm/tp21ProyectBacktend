@@ -20,8 +20,10 @@ export const login = async (
       password,
       matchUser.password
     );
+    console.log(matchHash);
 
-    if (matchHash) {
+    if (matchHash != true) {
+      console.log("errr");
       return resp.status(401).json({ message: "password is incorrect" });
     }
 
@@ -48,7 +50,9 @@ export const register = async (
   req: Request,
   resp: Response
 ): Promise<Response | any> => {
+  console.log("entrando a registro".blue);
   const { password, userName, email } = req.body;
+  console.log(password, userName, email);
   const img = req.file;
 
   try {
@@ -56,7 +60,7 @@ export const register = async (
     if (matchUser) {
       return resp.status(409).json({ message: "this user is already created" });
     }
-    console.log(`${(req.body.userName, req.body.email)}`.bgGreen);
+
     const passwordHash: string = await bcrypt.hash(password, 10);
 
     const newUser: IUserModel = new userModel({
@@ -64,8 +68,8 @@ export const register = async (
       password: passwordHash,
       userName,
     });
-
     if (img) {
+      console.log("entrando a subir imagen".red);
       const imgUrl: string | Error = await uploadImage(img);
       if (typeof imgUrl != "string") {
         return resp.status(406).json({ message: "error to upload image" });
@@ -81,7 +85,7 @@ export const register = async (
 
     resp.cookie("token", token);
 
-    const userSaved: IUserModel = await newUser.save();
+    await newUser.save();
 
     return resp.send({
       userName: newUser.userName,

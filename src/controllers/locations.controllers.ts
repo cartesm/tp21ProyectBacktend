@@ -29,7 +29,7 @@ export const addLocation = async (
     });
 
     if (img) {
-      const imgUrl = await uploadImage(img);
+      const imgUrl:string | Error = await uploadImage(img);
       if (typeof imgUrl != "string") {
         return resp.status(406).json({ message: "error to upload image" });
       }

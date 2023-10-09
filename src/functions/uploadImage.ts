@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
+import { UploadApiResponse, v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import path from "path";
 import { configs } from "../configs/config";
@@ -12,7 +12,7 @@ const uploadImg = async (file: Express.Multer.File) /* : Promise<string> */ => {
 
   try {
     // upload img
-    const resp = await cloudinary.uploader.upload(
+    const resp:UploadApiResponse = await cloudinary.uploader.upload(
       path.join("src", `temp/${file.filename}`)
     );
     console.log(resp.url);

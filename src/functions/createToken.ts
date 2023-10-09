@@ -10,7 +10,7 @@ export interface Idata {
 
 export default async (data: Idata) => {
   try {
-    const token = await jwt.sign(data, configs.jwt.key);
+    const token:string = await jwt.sign(data, configs.jwt.key);
 
     return token;
   } catch (err) {
