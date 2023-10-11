@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import createToken from "../functions/createToken";
 import uploadImage from "../functions/uploadImage";
+import ReportMode, { Ireport } from "../models/reports.model";
 import userModel, { IUserModel } from "../models/user.model";
 
 export const login = async (
@@ -107,4 +108,25 @@ export const logout = (req: Request, resp: Response): Response => {
 
   return resp.status(200).json({ message: "loged out" });
 };
-// * 604800000
+
+export const reportError = async (
+  req: Request,
+  resp: Response
+): Promise<Response | any> => {
+  const { userId, tittle, description } = req.body;
+
+  try {
+    const newReport: Ireport = new ReportMode({
+      user: userId,
+      tittle,
+      description,
+    });
+
+    await newReport.save();
+
+    resp.json(newReport);
+    
+  } catch (err) {
+    console.log(err);
+  }
+};
